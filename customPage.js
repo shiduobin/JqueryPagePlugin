@@ -2,13 +2,13 @@
     $.fn.CustomPage = function (config) {
         // 默认配置
         var defaults = {
-            pageSize: 10,
-            count: 100,
-            current: 1,
-            prevDes: "<上一页",
-            nextDes: "下一页>",
+            pageSize: 10, // 每页数目
+            count: 100, // 总页数
+            current: 1, // 当前页是第几页
+            prevDes: "上一页",
+            nextDes: "下一页",
             updateSelf: true,
-            callback: null
+            callback: null // 回调函数
         };
         // 插件配置合并
         this.oConfig = $.extend(defaults, config);
@@ -26,38 +26,61 @@
             typeof config.count !== 'undefined' ? self.count = config.count : self.count = self.oConfig.count;
             typeof config.pageSize !== 'undefined' ? self.pageSize = config.pageSize : self.pageSize = self.oConfig.pageSize;
             typeof config.current !== 'undefined' ? self.current = config.current : self.current = self.oConfig.current;
-            self.pageCount = Math.ceil(self.count / self.pageSize);
+            // self.pageCount = Math.ceil(self.count / self.pageSize);
+            self.pageCount = Math.ceil(self.count);
             format();
         };
         var format = function () {
             var current = self.current;
             var count = self.pageCount;
+            var size = self.pageSize;
             var html = '<div class="page-container"><ul>';
-            if (current != 1)
+            if (current != 1) {
+                // 如果不是第一页添加上一页
                 html += '<li class="page-item page-prev page-action-text">' + self.oConfig.prevDes + '</li>';
-            var start = 1;
-            var end = count;
-            if (count > 10) {
-                if (current <= 5) {
-                    start = 1;
-                    end = 10;
-                } else if (current >= count - 4) {
-                    start = count - 9;
-                    end = count;
+            }
+            var start, end;
+            if (count > size) {
+                console.log('当前页数：', current, '每页显示条数：', size);
+                if (current >= Math.floor(size / 2) + 2) {
+                    if (current + (Math.ceil(size / 2) - 1) < count) {
+                        start = current - Math.floor(size / 2);
+                        end = current + (Math.ceil(size / 2) - 1);
+                        for (var i = start; i <= end; i++) {
+                            html += getItem(i);
+                        }
+                    } else {
+                        start = count - (size - 1);
+                        end = count;
+                        for (var i = start; i <= end; i++) {
+                            html += getItem(i);
+                        }
+                    }
                 } else {
-                    start = current - 5;
-                    end = current + 4;
+                    start = 1;
+                    end = size;
+                    for (var i = start; i <= end; i++) {
+                        html += getItem(i);
+                    }
                 }
             }
-            for (var i = start; i <= end; i++) {
-                html += getItem(i);
+            if (count < size) {
+                start = 1;
+                end = count;
+                for (var i = start; i <= end; i++) {
+                    html += getItem(i);
+                }
             }
-            if (current != count)
+
+            if (current != count) {
+                // 如果不是最后一页添加下一页
                 html += '<li class="page-item page-next page-action-text">' + self.oConfig.nextDes + '</li>';
+            }
             html += '</ul></div>';
             self.html(html);
         };
         var getItem = function (i) {
+            // console.log('i:', i);
             var item = '';
             var current = (i == self.current);
             item += '<li class="page-item" data-page="' + i + '"><div class="page-icon-content">';

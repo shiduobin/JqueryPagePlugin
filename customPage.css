@@ -16,6 +16,7 @@
 }
 
 .page-item {
+    user-select: none;
     margin-right: 9px;
 }
 

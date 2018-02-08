@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>仿百度分页小插件</title>
+    <title>百度分页小插件</title>
     <link rel="stylesheet" href="customPage.css">
-    <script type="text/javascript" src="jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="jquery-2.1.1.js"></script>
     <script type="text/javascript" src="customPage.js"></script>
     <script>
         $(function () {
-            var page = $(".page").CustomPage({
-                pageSize: 10,
-                count: 160,
+            $(".page").CustomPage({
+                pageSize: 5,
+                count: 20,
                 current: 1
             });
 
-            var page2 = $(".page2").CustomPage({
-                pageSize: 10,
+            $(".page2").CustomPage({
+                pageSize: 6,
                 count: 120,
                 current: 5,
-                updateSelf: false,
+                // updateSelf: false,
                 callback: function (selected) {
                     alert(selected);
                 }
             });
-
         });
     </script>
 </head>
