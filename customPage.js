@@ -7,13 +7,16 @@
             current: 1, // 当前页是第几页
             prevDes: "上一页",
             nextDes: "下一页",
+            homePageText: "首页",
+            endPageText: "尾页",
+            isShow: true,
             updateSelf: true,
             callback: null // 回调函数
         };
         // 插件配置合并
+        console.log(config);
         this.oConfig = $.extend(defaults, config);
         var self = this;
-
         // 初始化函数
         var init = function () {
             // 初始化数据
@@ -41,7 +44,6 @@
             }
             var start, end;
             if (count > size) {
-                console.log('当前页数：', current, '每页显示条数：', size);
                 if (current >= Math.floor(size / 2) + 2) {
                     if (current + (Math.ceil(size / 2) - 1) < count) {
                         start = current - Math.floor(size / 2);
@@ -78,9 +80,15 @@
             }
             html += '</ul></div>';
             self.html(html);
+            if (self.oConfig.isShow) {
+                $(".page-prev").after("<li class='page-item home page-action-text'>" + self.oConfig.homePageText + "</li>");
+                $(".page-next").after("<li class='page-item end page-action-text'>" + self.oConfig.endPageText + "</li>");
+            } else {
+                $(".home").remove();
+                $(".end").remove();
+            }
         };
         var getItem = function (i) {
-            // console.log('i:', i);
             var item = '';
             var current = (i == self.current);
             item += '<li class="page-item" data-page="' + i + '"><div class="page-icon-content">';
@@ -100,6 +108,10 @@
                     current = Math.max(1, self.current - 1);
                 } else if ($(this).hasClass('page-next')) {
                     current = Math.min(self.pageCount, self.current + 1);
+                } else if ($(this).hasClass('home')) {
+                    current = 1;
+                } else if ($(this).hasClass('end')) {
+                    current = self.pageCount;
                 } else {
                     current = parseInt($(this).data('page'));
                 }

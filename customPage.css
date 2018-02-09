@@ -33,8 +33,8 @@
     margin-right: auto;
     cursor: pointer;
     overflow: hidden;
-    border-style:none;
-    background: url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/global/img/icons_5859e57.png) no-repeat  -144px -288px;
+    border-style: none;
+    background: url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/global/img/icons_5859e57.png) no-repeat -144px -288px;
 }
 
 .page-icon-type1 {
@@ -72,9 +72,12 @@
     cursor: pointer;
     display: block;
     line-height: 36px;
+    color: #000;
+    font-weight: 800;
 }
 
-.page-text:hover,.page-action-text:hover {
+.page-text:hover, .page-action-text:hover {
+    background: #f2f8ff;
     border: 1px solid rgb(0, 0, 204);
 }
 
