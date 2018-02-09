@@ -9,12 +9,11 @@
             nextDes: "下一页",
             homePageText: "首页",
             endPageText: "尾页",
-            isShow: true,
+            isShow: true, // 是否显示首尾页
             updateSelf: true,
             callback: null // 回调函数
         };
         // 插件配置合并
-        console.log(config);
         this.oConfig = $.extend(defaults, config);
         var self = this;
         // 初始化函数
@@ -40,7 +39,12 @@
             var html = '<div class="page-container"><ul>';
             if (current != 1) {
                 // 如果不是第一页添加上一页
-                html += '<li class="page-item page-prev page-action-text">' + self.oConfig.prevDes + '</li>';
+                if (self.oConfig.isShow) {
+                    html += '<li class="page-item page-prev page-action-text">' + self.oConfig.prevDes + '</li>' +
+                        '<li class="page-item home page-action-text">' + self.oConfig.homePageText + '</li>';
+                } else {
+                    html += '<li class="page-item page-prev page-action-text">' + self.oConfig.prevDes + '</li>';
+                }
             }
             var start, end;
             if (count > size) {
@@ -76,17 +80,15 @@
 
             if (current != count) {
                 // 如果不是最后一页添加下一页
-                html += '<li class="page-item page-next page-action-text">' + self.oConfig.nextDes + '</li>';
+                if (self.oConfig.isShow) {
+                    html += '<li class="page-item page-next page-action-text">' + self.oConfig.nextDes + '</li>' +
+                        '<li class="page-item end page-action-text">' + self.oConfig.endPageText + '</li>';
+                } else {
+                    html += '<li class="page-item page-next page-action-text">' + self.oConfig.nextDes + '</li>';
+                }
             }
             html += '</ul></div>';
             self.html(html);
-            if (self.oConfig.isShow) {
-                $(".page-prev").after("<li class='page-item home page-action-text'>" + self.oConfig.homePageText + "</li>");
-                $(".page-next").after("<li class='page-item end page-action-text'>" + self.oConfig.endPageText + "</li>");
-            } else {
-                $(".home").remove();
-                $(".end").remove();
-            }
         };
         var getItem = function (i) {
             var item = '';
@@ -132,4 +134,3 @@
         return self;
     };
 })(jQuery, window);
-
